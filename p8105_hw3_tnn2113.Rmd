@@ -34,7 +34,7 @@ Tidy data into "minute of the day" and "activity count" columns
 ```{r}
 accel_df = 
   read_csv("./data/accel_data.csv") %>% 
-  pivot_longer(
+   pivot_longer(
     activity.1:activity.1440,
     names_to = "minute",
     names_prefix = "activity.",
@@ -50,8 +50,24 @@ accel_df =
              "Friday" = "weekday",
              "Saturday" = "weekend",
              "Sunday" = "weekend")
-    )
+  )
 ```
 
 There are 6 variables which include `week`, `day_id`, `day`, `minute of the day`, `activity_count`, and `weekday_or_weekend`. There are total 50,400 observations. 
+
+
+```{r}
+accel_df_tidy = 
+  accel_df %>% 
+  group_by(week,day_id, day) %>% 
+  summarise(
+    mean_activity_count = mean(activity_count, na.rm = TRUE)
+  ) %>% 
+  pivot_wider(
+    names_from = day,
+    values_from = mean_activity_count
+  )
+```
+
+Patient's activity count is high on the weekends during the first 3 weeks. In general, patient is more active during the weekdays. 
 
