@@ -71,3 +71,9 @@ accel_df_tidy =
 
 Patient's activity count is high on the weekends during the first 3 weeks. In general, patient is more active during the weekdays. 
 
+```{r}
+ggplot(data = accel_df, aes(x = day_id, y = activity_count, color = day)) + 
+  geom_point(alpha = .5)
+```
+
+From the graph, Wednesday (Day 14) has the highest activity count. Patient were not very active on Tuesdays, Thursdays, and Saturdays. 
