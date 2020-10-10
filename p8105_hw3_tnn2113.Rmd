@@ -51,6 +51,9 @@ accel_df =
              "Saturday" = "weekend",
              "Sunday" = "weekend")
   )
+
+accel_df$day = factor(accel_df$day, levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+accel_df[order(accel_df$day), ]
 ```
 
 There are 6 variables which include `week`, `day_id`, `day`, `minute of the day`, `activity_count`, and `weekday_or_weekend`. There are total 50,400 observations. 
@@ -62,7 +65,12 @@ accel_df_tidy =
   group_by(week,day_id, day) %>% 
   summarise(
     mean_activity_count = mean(activity_count, na.rm = TRUE)
-  ) %>% 
+  )
+
+accel_df_tidy$day = factor(accel_df_tidy$day, levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+accel_df_tidy[order(accel_df_tidy$day), ]
+
+accel_df_tidy %>% 
   pivot_wider(
     names_from = day,
     values_from = mean_activity_count
@@ -72,8 +80,24 @@ accel_df_tidy =
 Patient's activity count is high on the weekends during the first 3 weeks. In general, patient is more active during the weekdays. 
 
 ```{r}
-ggplot(data = accel_df, aes(x = day_id, y = activity_count, color = day)) + 
-  geom_point(alpha = .5)
+ggplot(accel_df_tidy, aes(x = day_id, y = mean_activity_count, color = day)) + 
+  geom_point() +
+  geom_line()
 ```
 
-From the graph, Wednesday (Day 14) has the highest activity count. Patient were not very active on Tuesdays, Thursdays, and Saturdays. 
+From the graph, patient's activity counts decreased on Saturdays and Sundays from day 24 to day 31. 
+Activity count of Fridays decreased from day 1 to day 22 but increased afterwards. On Tuesdays, Thursdays,and Friday, activity counts remained around the same pace. 
+
+
+
+## Problem 3
+
+Load the dataset
+
+```{r}
+devtools::install_github("p8105/p8105.datasets")
+library(p8105.datasets)
+data("ny_noaa")
+```
+
+
