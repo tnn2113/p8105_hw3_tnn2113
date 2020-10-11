@@ -128,5 +128,29 @@ most_snow[most_snow == max(most_snow)]
 ```
 The most observed values in snowfall is 0, which occurs 2008508 times. Because snow occurs mostly from December to March but for only certain days. 
 
+Two-panel plot showing the average max temperature in January and July in each station across year
+
+```{r}
+average_tmax = 
+  ny_noaa_df %>% 
+  filter(month %in% c("01", "07")) %>% 
+  group_by(id, year, month) %>% 
+  summarise(
+    mean_tmax = mean(tmax, na.rm = TRUE)
+  )
+
+average_tmax %>% 
+  ggplot(aes(x = year, y = mean_tmax, color = id)) + 
+  geom_point(aes(size = mean_tmax), alpha = .5) + 
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ month)
+```
+
+Two-panel plot showing tmax vs tmin for the full dataset
+
+
+
+
+
 
 
