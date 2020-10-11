@@ -100,4 +100,33 @@ library(p8105.datasets)
 data("ny_noaa")
 ```
 
+Data cleaning (separate date, convert prcp to the same unit as snowfall, convert tmax and tmin to degree C)
+
+```{r}
+ny_noaa_df = 
+  ny_noaa %>% 
+  separate(date, into = c("year", "month", "day"), sep = "-")
+```
+
+```{r}
+ny_noaa_df$tmin = as.double(as.character(ny_noaa_df$tmin))
+ny_noaa_df$tmax = as.double(as.character(ny_noaa_df$tmax))
+
+ny_noaa_df %>% 
+  mutate(
+    prcp = prcp * 10,
+    tmin = tmin * 10,
+    tmax = tmax * 10
+  )
+```
+
+Most observed values in snowfall
+
+```{r}
+most_snow = table(ny_noaa_df$snow)
+most_snow[most_snow == max(most_snow)]
+```
+The most observed values in snowfall is 0, which occurs 2008508 times. Because snow occurs mostly from December to March but for only certain days. 
+
+
 
