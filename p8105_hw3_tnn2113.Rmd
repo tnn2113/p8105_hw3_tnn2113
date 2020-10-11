@@ -148,7 +148,25 @@ average_tmax %>%
 
 Two-panel plot showing tmax vs tmin for the full dataset
 
+Part (i)
 
+```{r}
+ggplot(ny_noaa_df, aes(x = tmax, y = tmin)) +
+  geom_density2d()
+```
+
+Part (ii)
+
+```{r}
+library(ggridges)
+```
+
+```{r, fig.width=12, fig.height=16}
+snowfall_partii = filter(ny_noaa_df, snow > 0, snow < 100)
+snowfall_partii %>% 
+  ggplot(aes(x = snow, y = year)) + 
+  geom_density_ridges(scale = .85)
+```
 
 
 
